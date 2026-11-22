@@ -41,4 +41,39 @@ Validate real-time hand landmark detection using MediaPipe.
 - Finger counting is not implemented yet.
 
 
+## Issue #3 — Finger Counting
+
+### Objective
+
+Validate finger counting from 0 to 5 using hand landmarks.
+
+### Automated Tests
+
+Run:
+
+`python -m pytest tests/ -v`
+
+Result: To be completed after execution.
+
+### Manual Tests
+
+| ID | Scenario | Expected | Status |
+|---|---|---|---|
+| T11 | Closed fist | 0 fingers | Passed |
+| T12 | Index raised | 1 finger | Passed |
+| T13 | Victory gesture | 2 fingers | Passed |
+| T14 | Three fingers raised | 3 fingers | Passed |
+| T15 | Four fingers raised | 4 fingers | Passed |
+| T16 | Open hand | 5 fingers | Passed |
+| T17 | No hand visible | Display "-" | Passed |
+| T18 | Left and right hands | Correct count | Passed |
+
+### Known Limitations
+
+- The algorithm uses 2D landmark geometry.
+- Strong rotations and occlusions may reduce accuracy.
+- Thresholds may require further calibration.
+
+
+
 

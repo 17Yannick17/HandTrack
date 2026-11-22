@@ -37,3 +37,22 @@ landmarks in a live webcam stream.
 - Limit detection to one hand in version 1.0.
 - Separate webcam management from hand detection.
 - Keep the pretrained model outside version control.
+
+
+## Finger Counting
+
+The `finger_counter.py` module analyzes the geometry
+of the 21 detected hand landmarks.
+
+It determines the state of each finger using:
+- Joint angles
+- Distances relative to the wrist or palm
+- Geometric thresholds
+
+The module provides two functions:
+
+- `get_finger_states()`: returns the state of each finger.
+- `count_fingers()`: returns the number of raised fingers.
+
+This logic is independent of MediaPipe and OpenCV,
+allowing automated unit testing.
