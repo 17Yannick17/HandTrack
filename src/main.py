@@ -4,6 +4,7 @@ from pathlib import Path
 import cv2
 
 from src.hand_tracker import HandTracker
+from src.finger_counter import count_fingers
 
 
 WINDOW_NAME = "HandTrack - Hand Detection"
@@ -46,6 +47,20 @@ def main():
             # Draw hand skeleton
             tracker.draw_landmarks(frame, result)
 
+            # Count raised fingers
+            if result.hand_landmarks:
+                landmarks = result.hand_landmarks[0]
+
+                height, width = frame.shape[:2]
+
+                finger_count = count_fingers(
+                    landmarks, width, height
+                )
+
+                finger_text = f"Fingers: {finger_count}"
+            else:
+                finger_text = "Fingers: -"
+
             # Display detection status
             if result.hand_landmarks:
                 status = "Hand detected"
@@ -71,6 +86,16 @@ def main():
                 cv2.FONT_HERSHEY_SIMPLEX,
                 0.6,
                 (255, 255, 255),
+                2
+            )
+
+            cv2.putText(
+                frame,
+                finger_text,
+                (20, 115),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.9,
+                (255, 255, 0),
                 2
             )
 
