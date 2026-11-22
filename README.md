@@ -67,7 +67,16 @@ python -m src.main
 
 ## Project Status
 
-Development environment configured.
+Development in progress.
+
+Completed:
+- Python environment configuration
+- Real-time webcam capture
+
+Upcoming:
+- Hand landmark detection
+- Finger counting
+- Gesture recognition
 
 ## Documentation
 
