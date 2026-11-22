@@ -16,3 +16,6 @@ venv/
 # System
 .DS_Store
 Thumbs.db
+
+# Downloaded machine learning models
+models/*.task
