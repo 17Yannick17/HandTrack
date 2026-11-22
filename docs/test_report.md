@@ -76,4 +76,39 @@ Result: To be completed after execution.
 
 
 
+## Issue #4 — Gesture Recognition
+
+### Objective
+
+Validate predefined hand gesture recognition.
+
+### Automated Tests
+
+Command:
+
+`python -m pytest tests/ -v`
+
+Result: To be completed after execution.
+
+### Manual Tests
+
+| ID | Test | Expected Result | Status |
+|---|---|---|---|
+| T19 | Closed fist | Fist | Passed |
+| T20 | Open hand | Open Palm | Passed |
+| T21 | Victory sign | Victory | Passed |
+| T22 | Index finger raised | Unknown | Passed |
+| T23 | Remove hand | No Hand | Passed |
+| T24 | Quickly change gestures | Stable recognition | Passed |
+| T25 | Left and right hands | Correct recognition | Passed |
+
+### Known Limitations
+
+- Recognition depends on finger-counting accuracy.
+- Strong rotations may affect finger-state detection.
+- Gestures require four consecutive matching frames
+  before confirmation.
+
+
+
 
