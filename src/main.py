@@ -1,52 +1,91 @@
+
+from pathlib import Path
+
 import cv2
 
-WINDOW_NAME = "HandTrack - Webcam"
+from src.hand_tracker import HandTracker
+
+
+WINDOW_NAME = "HandTrack - Hand Detection"
+
+MODEL_PATH = (
+    Path(__file__).resolve().parent.parent
+    / "models"
+    / "hand_landmarker.task"
+)
+
 
 def main():
-    # Initialize the default webcam
     camera = cv2.VideoCapture(0)
 
     if not camera.isOpened():
         camera.release()
         raise RuntimeError("Unable to open the webcam.")
 
+    tracker = None
+
     print("HandTrack started.")
     print("Press Q to quit.")
 
     try:
+        tracker = HandTracker(MODEL_PATH)
+
         while True:
-            # Capture a video frame
             success, frame = camera.read()
 
             if not success or frame is None:
                 print("Error: unable to read webcam frame.")
                 break
 
-            # Mirror the image
+            # Mirror the webcam image
             frame = cv2.flip(frame, 1)
 
-            # Display instructions
+            # Detect hand landmarks
+            result = tracker.detect(frame)
+
+            # Draw hand skeleton
+            tracker.draw_landmarks(frame, result)
+
+            # Display detection status
+            if result.hand_landmarks:
+                status = "Hand detected"
+                color = (0, 255, 0)
+            else:
+                status = "No hand detected"
+                color = (0, 0, 255)
+
             cv2.putText(
                 frame,
-                "HandTrack | Press Q to quit",
+                status,
                 (20, 40),
                 cv2.FONT_HERSHEY_SIMPLEX,
-                0.7,
-                (0, 255, 0),
+                0.8,
+                color,
                 2
             )
 
-            # Display the video
+            cv2.putText(
+                frame,
+                "Press Q to quit",
+                (20, 75),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.6,
+                (255, 255, 255),
+                2
+            )
+
             cv2.imshow(WINDOW_NAME, frame)
 
-            # Exit when Q is pressed
             if cv2.waitKey(1) & 0xFF == ord("q"):
                 break
 
     finally:
-        # Release resources
         camera.release()
         cv2.destroyAllWindows()
+
+        if tracker is not None:
+            tracker.close()
+
         print("HandTrack stopped.")
 
 
