@@ -56,3 +56,31 @@ The module provides two functions:
 
 This logic is independent of MediaPipe and OpenCV,
 allowing automated unit testing.
+
+
+## Gesture Recognition
+
+The `gesture_detector.py` module classifies hand
+gestures using individual finger states.
+
+### Supported Gestures
+
+- Fist: all five fingers are folded.
+- Open Palm: all five fingers are raised.
+- Victory: index and middle fingers are raised,
+  while the remaining fingers are folded.
+- Unknown: any other finger configuration.
+
+### Temporal Stabilization
+
+The GestureStabilizer class confirms a gesture
+after four consecutive matching predictions.
+
+This reduces short-term classification flickering.
+
+The stabilizer is reset whenever no hand is detected.
+
+### Limitations
+
+Gesture classification depends on finger-counting
+accuracy and the quality of hand landmark detection.
