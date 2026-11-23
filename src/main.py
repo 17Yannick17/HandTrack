@@ -7,11 +7,12 @@ from src.hand_tracker import HandTracker
 from src.finger_counter import get_finger_states
 from src.gesture_detector import (
     classify_gesture,
-    GestureStabilizer
+    GestureStabilizer,
 )
+from src.gesture_actions import GestureActionController
 
 
-WINDOW_NAME = "HandTrack - Hand Detection"
+WINDOW_NAME = "HandTrack - Gesture Recognition"
 
 MODEL_PATH = (
     Path(__file__).resolve().parent.parent
@@ -28,7 +29,12 @@ def main():
         raise RuntimeError("Unable to open the webcam.")
 
     tracker = None
-    gesture_stabilizer = GestureStabilizer(required_frames=4)
+
+    gesture_stabilizer = GestureStabilizer(
+        required_frames=4
+    )
+
+    action_controller = GestureActionController()
 
     print("HandTrack started.")
     print("Press Q to quit.")
@@ -46,57 +52,73 @@ def main():
             # Mirror the webcam image
             frame = cv2.flip(frame, 1)
 
-            # Detect hand landmarks
+            # Detect and draw hand landmarks
             result = tracker.detect(frame)
-
-            # Draw hand skeleton
             tracker.draw_landmarks(frame, result)
 
-            # Analyze finger states and recognize gestures
             if result.hand_landmarks:
                 landmarks = result.hand_landmarks[0]
 
                 height, width = frame.shape[:2]
 
-                # Get individual finger states
+                # Analyze individual finger states
                 finger_states = get_finger_states(
                     landmarks, width, height
                 )
 
-                # Count raised fingers
-                finger_count = sum(finger_states.values())
-                finger_text = f"Fingers: {finger_count}"
+                finger_count = sum(
+                    finger_states.values()
+                )
 
-                # Classify the current gesture
-                raw_gesture = classify_gesture(finger_states)
+                finger_text = (
+                    f"Fingers: {finger_count}"
+                )
 
-                # Stabilize gesture recognition
-                gesture = gesture_stabilizer.update(raw_gesture)
-                gesture_text = f"Gesture: {gesture}"
+                # Classify and stabilize the gesture
+                raw_gesture = classify_gesture(
+                    finger_states
+                )
+
+                gesture = gesture_stabilizer.update(
+                    raw_gesture
+                )
+
+                gesture_text = (
+                    f"Gesture: {gesture}"
+                )
+
+                status = "Hand detected"
+                status_color = (0, 255, 0)
+
+                # Trigger visual action
+                action_controller.update(gesture)
+
+                hand_detected = True
 
             else:
                 finger_text = "Fingers: -"
-                gesture_stabilizer.reset()
                 gesture_text = "Gesture: No Hand"
 
-            # Display detection status
-            if result.hand_landmarks:
-                status = "Hand detected"
-                color = (0, 255, 0)
-            else:
                 status = "No hand detected"
-                color = (0, 0, 255)
+                status_color = (0, 0, 255)
 
+                gesture_stabilizer.reset()
+                action_controller.reset()
+
+                hand_detected = False
+
+            # Display hand detection status
             cv2.putText(
                 frame,
                 status,
                 (20, 40),
                 cv2.FONT_HERSHEY_SIMPLEX,
                 0.8,
-                color,
+                status_color,
                 2
             )
 
+            # Display instructions
             cv2.putText(
                 frame,
                 "Press Q to quit",
@@ -107,6 +129,7 @@ def main():
                 2
             )
 
+            # Display finger count
             cv2.putText(
                 frame,
                 finger_text,
@@ -128,6 +151,13 @@ def main():
                 2
             )
 
+            # Draw interactive visual feedback
+            action_controller.draw(
+                frame,
+                hand_detected=hand_detected
+            )
+
+            # Show the processed video
             cv2.imshow(WINDOW_NAME, frame)
 
             if cv2.waitKey(1) & 0xFF == ord("q"):

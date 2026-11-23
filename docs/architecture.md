@@ -84,3 +84,51 @@ The stabilizer is reset whenever no hand is detected.
 
 Gesture classification depends on finger-counting
 accuracy and the quality of hand landmark detection.
+
+
+## Gesture-Based Visual Actions
+
+The `gesture_actions.py` module manages visual
+responses associated with recognized hand gestures.
+
+### Supported Actions
+
+| Gesture | Visual Action |
+|---|---|
+| Fist | Red border and ALERT state |
+| Open Palm | Green border and READY state |
+| Victory | Blue border and SUCCESS state |
+| Unknown | Neutral WAITING state |
+| No Hand | Neutral NO HAND state |
+
+### Event Management
+
+The GestureActionController monitors transitions
+between stable hand gestures.
+
+A new action is triggered only when the confirmed
+gesture changes to a recognized gesture.
+
+Holding the same gesture does not repeatedly
+trigger the action.
+
+The controller maintains an action counter during
+the application session.
+
+### Visual Feedback
+
+The interface displays:
+
+- A colored border representing the active state.
+- A status message identifying the action.
+- A counter of triggered actions.
+- A brief notification when an action is triggered.
+
+### Architecture Decision
+
+Gesture classification and visual action management
+are implemented in separate modules.
+
+This separation improves maintainability and
+allows independent automated testing.
+

@@ -109,6 +109,46 @@ Result: To be completed after execution.
 - Gestures require four consecutive matching frames
   before confirmation.
 
+## Issue #5 — Visual Actions and Feedback
+
+### Objective
+
+Validate the visual responses associated with
+recognized hand gestures.
+
+### Automated Tests
+
+Command:
+
+`python -m pytest tests/ -v`
+
+Result: To be completed after execution.
+
+### Manual Tests
+
+| ID | Scenario | Expected Result | Status |
+|---|---|---|---|
+| T26 | Fist gesture | Red ALERT state | Passed |
+| T27 | Open Palm gesture | Green READY state | Passed |
+| T28 | Victory gesture | Blue SUCCESS state | Passed |
+| T29 | Hold a stable gesture | No repeated action | Passed |
+| T30 | Change recognized gesture | One new action | Passed |
+| T31 | Remove the hand | Neutral NO HAND state | Passed |
+| T32 | Unknown gesture | Neutral WAITING state | Passed |
+| T33 | Exit application | Resources released | Passed |
+
+### Observations
+
+To be completed after manual testing.
+
+### Known Limitations
+
+- Actions affect only the application interface.
+- Visual event detection depends on gesture recognition.
+- The action counter is reset when the program restarts.
+- The flash duration depends on the video frame rate.
+
+
 
 
 
