@@ -149,6 +149,59 @@ To be completed after manual testing.
 - The flash duration depends on the video frame rate.
 
 
+## Final Release Validation — v1.0.0
+
+### Test Environment
+
+- Operating system: Windows
+- Python: 3.14
+- IDE: PyCharm
+- Test framework: pytest
+- Camera: Local webcam
+
+### Automated Test Execution
+
+Command:
+
+`python -m pytest tests/ -v`
+
+Execution date: To be completed.
+
+Tests passed: To be completed.
+Tests failed: To be completed.
+
+### Final Acceptance Tests
+
+| ID | Expected Result | Status |
+|---|---|---|
+| V01 | Webcam opens | Passed |
+| V02 | Hand landmarks displayed | Passed |
+| V03 | Finger counting works | Passed |
+| V04 | Fist activates ALERT | Passed |
+| V05 | Open Palm activates READY | Passed |
+| V06 | Victory activates SUCCESS | Passed |
+| V07 | No duplicate action while holding a gesture | Passed |
+| V08 | Gesture transition triggers a new action | Passed |
+| V09 | Removing the hand resets the active state | Passed |
+| V10 | Unknown gesture activates WAITING | Passed |
+| V11 | Application closes correctly | Passed |
+| V12 | Webcam can be reopened | Passed |
+
+### Integration Result
+
+To be completed after testing.
+
+### Known Limitations
+
+To be completed or confirmed after testing.
+
+### Release Decision
+
+Status: Approved.
+
+The release can be approved after all blocking
+issues are resolved and acceptance criteria are met.
+
 
 
 
