@@ -40,4 +40,29 @@ visuelle.
 - Entraînement personnalisé d'un modèle d'IA.
 - Commande du volume ou d'autres applications externes.
 - Enregistrement automatique des images de la webcam.
+
+
+## Requirements Traceability — Version 1.0
+
+| Requirement | Description | Implementation | Validation |
+|---|---|---|---|
+| F01 | Webcam capture | src/main.py | V01, V11, V12 |
+| F02 | Hand landmark detection | src/hand_tracker.py | V02 |
+| F03 | Finger counting | src/finger_counter.py | V03 |
+| F04 | Gesture recognition | src/gesture_detector.py | V04, V05, V06, V10 |
+| F05 | Real-time gesture display | src/main.py | V04, V05, V06 |
+| F06 | Gesture-based visual actions | src/gesture_actions.py | V04 to V10 |
+
+## Version 1.0 Acceptance Criteria
+
+- All required features are implemented.
+- Automated unit tests pass.
+- Manual acceptance tests pass.
+- Installation instructions are reproducible.
+- Technical documentation is complete.
+- A working demonstration is available.
+
+Any unresolved non-blocking limitation must be
+documented before release.
+
   

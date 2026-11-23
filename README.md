@@ -3,186 +3,184 @@
 
 **Real-Time Hand Tracking and Gesture Recognition Using Python**
 
-HandTrack is a computer vision application that uses a webcam to detect and track a human hand, count raised fingers, recognize predefined hand gestures, and trigger interactive visual responses in real time.
+![Python Tests](https://github.com/17Yannick17/HandTrack/actions/workflows/python-tests.yml/badge.svg)
 
-The project demonstrates practical applications of computer vision, geometric analysis, real-time image processing, software testing, and structured software development.
+HandTrack is a real-time computer vision application that detects and tracks a human hand using a webcam, counts raised fingers, recognizes predefined hand gestures, and triggers interactive visual feedback.
 
-## 1. Features
+The application combines MediaPipe hand landmark detection, custom geometric algorithms, temporal gesture stabilization, and OpenCV-based visualization.
 
-### Completed
+The project was developed following a structured software engineering workflow, including requirements analysis, modular implementation, automated testing, documentation, GitHub Issues, and Pull Requests.
 
-- Real-time webcam capture using OpenCV.
-- Hand detection using MediaPipe Hand Landmarker.
-- Visualization of 21 hand landmarks.
-- Real-time hand movement tracking.
+## 1. Demo
+
+**[Watch the HandTrack Demonstration](assets/demo.mp4)**
+
+The demonstration showcases:
+
+- Real-time hand landmark tracking.
 - Finger counting from 0 to 5.
-- Individual finger state detection.
-- Recognition of three predefined hand gestures:
-  - **Fist** — All fingers folded.
-  - **Open Palm** — All fingers raised.
-  - **Victory** — Index and middle fingers raised.
-- Unknown gesture classification.
-- Temporal stabilization of gesture recognition.
-- Automated unit tests for finger counting and gesture recognition.
-- Webcam error handling and resource cleanup.
+- Recognition of Fist, Open Palm, and Victory gestures.
+- Interactive visual feedback.
+- Action event counting.
 
-### In Development
+## 2. Features
 
-- Gesture-based visual actions.
-- Color-coded feedback for recognized gestures.
-- Visual action event counting.
-- Automated testing of visual actions.
+### Real-Time Hand Tracking
 
-### Planned
+- Webcam capture using OpenCV.
+- Detection of 21 hand landmarks using MediaPipe.
+- Visualization of hand landmarks and their connections.
+- Continuous tracking of hand movements.
+- Detection status displayed on screen.
 
-- Final integration testing.
-- Complete technical documentation.
-- Application demonstration.
-- Version 1.0 release.
+### Finger Counting
 
-## 2. Technologies
+- Count raised fingers from 0 to 5.
+- Determine the individual state of each finger.
+- Analyze hand geometry using joint angles and distances.
+- Support left and right hands independently.
+
+### Gesture Recognition
+
+HandTrack recognizes three predefined gestures:
+
+| Gesture | Finger Configuration |
+|---|---|
+| Fist | All fingers folded |
+| Open Palm | All fingers raised |
+| Victory | Index and middle raised, other fingers folded |
+| Unknown | Any other configuration |
+
+Gesture recognition uses custom classification rules based on the detected finger states.
+
+### Temporal Stabilization
+
+A gesture must be detected in four consecutive frames before being confirmed.
+
+This reduces short-term classification flickering and improves visual stability.
+
+The gesture state is reset when no hand is detected.
+
+### Interactive Visual Feedback
+
+Each recognized gesture triggers a visual action:
+
+| Gesture | Action | Color |
+|---|---|---|
+| Fist | ALERT | Red |
+| Open Palm | READY | Green |
+| Victory | SUCCESS | Blue |
+| Unknown | WAITING | Neutral |
+| No Hand | NO HAND | Neutral |
+
+The application also provides:
+
+- Color-coded interface borders.
+- A visual action status panel.
+- A counter of triggered actions.
+- A temporary notification for new actions.
+
+Actions are triggered when the confirmed gesture changes, not on every video frame.
+
+## 3. Technologies
 
 | Technology | Purpose |
 |---|---|
 | Python 3.14 | Programming language |
 | OpenCV | Webcam capture and image processing |
-| MediaPipe | Hand landmark detection and tracking |
+| MediaPipe | Hand landmark detection |
 | NumPy | Numerical operations |
-| pytest | Automated testing |
+| pytest | Automated unit testing |
 | Git | Version control |
-| GitHub | Project and issue management |
+| GitHub | Source hosting and issue tracking |
+| GitHub Actions | Continuous integration |
 | PyCharm | Development environment |
 
 HandTrack uses a pretrained MediaPipe Hand Landmarker model.
 
-No custom machine learning training is required.
+No custom machine learning model is trained. The finger-counting and gesture-classification logic is implemented using geometric algorithms.
 
-## 3. Project Structure
+## 4. Project Architecture
+
+HandTrack follows a modular architecture designed to separate video acquisition, perception, classification, and visual interaction.
+
+### Project Structure
 
 ```text
 HandTrack/
-│
-├── src/
-│   ├── __init__.py
-│   ├── main.py
-│   ├── hand_tracker.py
-│   ├── finger_counter.py
-│   ├── gesture_detector.py
-│   └── gesture_actions.py
-│
-├── tests/
-│   ├── test_finger_counter.py
-│   ├── test_gesture_detector.py
-│   └── test_gesture_actions.py
-│
-├── models/
-│   ├── README.md
-│   └── hand_landmarker.task
-│
-├── docs/
-│   ├── requirements.md
-│   ├── architecture.md
-│   └── test_report.md
-│
-├── .gitignore
-├── requirements.txt
-└── README.md
+|
+|-- .github/
+|   `-- workflows/
+|       `-- python-tests.yml
+|
+|-- src/
+|   |-- __init__.py
+|   |-- main.py
+|   |-- hand_tracker.py
+|   |-- finger_counter.py
+|   |-- gesture_detector.py
+|   `-- gesture_actions.py
+|
+|-- tests/
+|   |-- test_finger_counter.py
+|   |-- test_gesture_detector.py
+|   `-- test_gesture_actions.py
+|
+|-- models/
+|   |-- README.md
+|   `-- hand_landmarker.task
+|
+|-- docs/
+|   |-- requirements.md
+|   |-- architecture.md
+|   `-- test_report.md
+|
+|-- assets/
+|   `-- demo.mp4
+|
+|-- .gitignore
+|-- requirements.txt
+|-- CHANGELOG.md
+`-- README.md
 ```
 
-The virtual environment and pretrained model file are excluded from Git version control.
+The virtual environment and downloaded model file are excluded from version control.
 
-The visual action modules and associated tests are being integrated during Issue #5.
+### Main Modules
 
-## 4. Installation
+**main.py**
 
-### Prerequisites
+- Initializes and manages the webcam.
+- Coordinates the processing pipeline.
+- Displays the annotated video.
+- Handles application shutdown.
 
-- Python 3.14 or another version supported by the dependencies.
-- Git.
-- A working webcam.
-- A compatible operating system.
+**hand_tracker.py**
 
-The project is developed locally using PyCharm on Windows.
+- Loads the pretrained MediaPipe model.
+- Detects hand landmarks.
+- Draws landmarks and connections.
 
-### Step 1 — Clone the Repository
+**finger_counter.py**
 
-```cmd
-git clone https://github.com/17Yannick17/HandTrack.git
-cd HandTrack
-```
+- Calculates geometric relationships between landmarks.
+- Determines which fingers are raised.
+- Counts the number of raised fingers.
 
-### Step 2 — Create a Virtual Environment
+**gesture_detector.py**
 
-```cmd
-python -m venv .venv
-```
+- Classifies gestures using finger states.
+- Handles unknown gestures.
+- Stabilizes predictions across consecutive frames.
 
-Activate the environment on Windows CMD:
+**gesture_actions.py**
 
-```cmd
-.venv\Scripts\activate
-```
+- Maps recognized gestures to visual actions.
+- Tracks gesture transitions.
+- Displays interactive visual feedback.
+- Maintains the action counter.
 
-### Step 3 — Install Dependencies
-
-```cmd
-python -m pip install -r requirements.txt
-```
-
-### Step 4 — Download the MediaPipe Model
-
-Create the model directory if necessary:
-
-```cmd
-mkdir models
-```
-
-Download the pretrained model:
-
-```cmd
-curl.exe -L --fail "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task" -o "models\hand_landmarker.task"
-```
-
-The model must be stored at:
-
-`models/hand_landmarker.task`
-
-See [Model Documentation](models/README.md).
-
-## 5. Usage
-
-Launch the application from the project root:
-
-```cmd
-python -m src.main
-```
-
-A window opens and displays the live webcam stream.
-
-### Instructions
-
-1. Present one hand in front of the webcam.
-2. Observe the detected hand landmarks.
-3. Raise different fingers to test finger counting.
-4. Perform one of the supported gestures.
-5. Observe the recognized gesture on the screen.
-6. During Issue #5, test the corresponding visual actions.
-7. Press **Q** to close the application.
-
-### Supported Gestures
-
-| Gesture | Finger Configuration | Visual Action |
-|---|---|---|
-| Fist | All fingers folded | Red ALERT mode |
-| Open Palm | All fingers raised | Green READY mode |
-| Victory | Index and middle raised | Blue SUCCESS mode |
-| Unknown | Other configurations | Neutral WAITING mode |
-
-The visual actions are being implemented during Issue #5.
-
-## 6. How It Works
-
-HandTrack follows a modular computer vision pipeline:
+### Processing Pipeline
 
 ```text
 Webcam
@@ -191,7 +189,7 @@ Webcam
 Video Capture (OpenCV)
    |
    v
-BGR to RGB Conversion
+Frame Preprocessing (BGR to RGB)
    |
    v
 Hand Landmark Detection (MediaPipe)
@@ -214,18 +212,126 @@ Temporal Stabilization
 Gesture Action Controller
    |
    v
-Interactive Visual Feedback
+Interactive Video Display
 ```
+
+For more information, see [Software Architecture](docs/architecture.md).
+
+## 5. Installation
+
+### Prerequisites
+
+- Python 3.14.
+- Git.
+- A working webcam.
+- Windows with webcam access enabled.
+
+The project was developed and validated locally using PyCharm on Windows.
+
+Other environments may work if compatible versions of the dependencies are available, but they are not part of the documented validation environment.
+
+### Step 1 — Clone the Repository
+
+```cmd
+git clone https://github.com/17Yannick17/HandTrack.git
+cd HandTrack
+```
+
+### Step 2 — Create a Virtual Environment
+
+```cmd
+python -m venv .venv
+```
+
+Activate the virtual environment using Windows CMD:
+
+```cmd
+.venv\Scripts\activate
+```
+
+### Step 3 — Install Dependencies
+
+```cmd
+python -m pip install -r requirements.txt
+```
+
+Verify the installed dependencies:
+
+```cmd
+python -m pip check
+```
+
+### Step 4 — Download the MediaPipe Model
+
+Create the models directory if needed:
+
+```cmd
+mkdir models
+```
+
+Download the pretrained Hand Landmarker model:
+
+```cmd
+curl.exe -L --fail "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task" -o "models\hand_landmarker.task"
+```
+
+The model must be saved at:
+
+`models/hand_landmarker.task`
+
+See [Model Documentation](models/README.md) for additional details.
+
+### Step 5 — Start HandTrack
+
+```cmd
+python -m src.main
+```
+
+The webcam window should open automatically.
+
+## 6. Usage
+
+1. Position one hand in front of the webcam.
+2. Wait for MediaPipe to detect the hand landmarks.
+3. Raise different fingers to test finger counting.
+4. Make a Fist, Open Palm, or Victory gesture.
+5. Observe the recognized gesture and corresponding action.
+6. Change gestures to trigger new visual events.
+7. Press **Q** to close the application.
+
+### Example Behavior
+
+**Fist**
+
+The application recognizes a closed fist and activates the red ALERT state.
+
+**Open Palm**
+
+The application recognizes an open hand and activates the green READY state.
+
+**Victory**
+
+The application recognizes the index and middle fingers raised and activates the blue SUCCESS state.
+
+**Unknown**
+
+The application displays a neutral WAITING state when a gesture is not recognized.
+
+**No Hand**
+
+The active gesture and visual feedback are reset when the hand disappears.
+
+## 7. Algorithms
 
 ### Hand Landmark Detection
 
-MediaPipe identifies 21 landmarks corresponding to the wrist and finger joints.
+MediaPipe detects 21 hand landmarks and returns their normalized coordinates.
 
-These landmarks provide normalized coordinates used for geometric analysis.
+The landmarks correspond to the wrist and finger joints.
 
 ### Finger Counting
 
-Finger counting is based on geometric calculations:
+The finger-counting algorithm uses:
 
 - Joint angles.
 - Distances between landmarks.
@@ -234,102 +340,116 @@ Finger counting is based on geometric calculations:
 
 Each finger is classified as raised or folded.
 
-### Gesture Recognition
+The final count is calculated from the five finger states.
 
-The `gesture_detector.py` module uses finger states to recognize predefined gestures.
+### Gesture Classification
 
-A gesture is classified as Fist, Open Palm, Victory, or Unknown.
+Gesture recognition is based on predefined combinations of finger states.
+
+The algorithm distinguishes Fist, Open Palm, Victory, and Unknown.
 
 ### Temporal Stabilization
 
-A gesture must be detected in four consecutive frames before being confirmed.
+A gesture must be recognized for four consecutive frames before confirmation.
 
-This reduces short-term classification flickering.
+This reduces sudden changes caused by temporary detection errors.
 
-The gesture state is reset when no hand is detected.
+### Action Event Management
 
-### Interactive Visual Actions
+Visual actions are activated only when the confirmed gesture changes to a recognized gesture.
 
-The `gesture_actions.py` module manages visual responses associated with confirmed gestures.
+Holding the same gesture does not repeatedly increase the action counter.
 
-The interface is designed to display:
+## 8. Testing and Validation
 
-- A colored border for the active gesture.
-- A visual action status.
-- A counter of triggered actions.
-- A short notification when a new action occurs.
-
-An action is triggered once per transition to a recognized gesture, not once per video frame.
-
-This feature is being developed during Issue #5.
-
-## 7. Testing
-
-HandTrack includes automated unit tests and manual webcam validation.
+HandTrack uses automated unit tests and manual integration testing.
 
 ### Automated Tests
 
-Run all tests using:
+Run the complete test suite:
 
 ```cmd
 python -m pytest tests/ -v
 ```
 
-The test suite covers:
+The automated tests cover:
 
 - Finger counting from 0 to 5.
 - Individual finger states.
 - Mirrored landmark configurations.
-- Invalid input handling.
+- Invalid landmark data.
 - Gesture classification.
-- Temporal gesture stabilization.
+- Temporal stabilization.
 - Gesture transitions.
-- Visual action event management.
+- Action event management.
+- Prevention of repeated actions.
+- Visual feedback rendering.
 
-### Manual Tests
+### Manual Integration Tests
 
-Manual testing includes:
+Manual testing verifies:
 
 - Webcam initialization and shutdown.
-- Hand landmark detection.
-- Hand movement tracking.
-- Finger counting.
+- Hand landmark tracking.
+- Finger-counting behavior.
 - Gesture recognition.
-- Recognition stability.
-- Visual feedback.
-- Action event counting.
-- Resource cleanup.
+- Interactive visual responses.
+- Action counter behavior.
+- Unknown and no-hand states.
+- Application restart.
 
-Actual test results are documented in the [Test Report](docs/test_report.md).
+### Continuous Integration
 
-## 8. Project Management
+GitHub Actions automatically runs the Python test suite on pushes and Pull Requests targeting the main branch.
 
-HandTrack follows a lightweight software development lifecycle.
+The workflow installs dependencies, checks Python syntax, verifies dependencies, and executes pytest.
 
-Project management practices include:
+The CI workflow does not require a webcam because the automated tests use simulated hand landmark data.
 
-- GitHub Issues for task tracking.
-- GitHub Projects for Kanban management.
-- Dedicated feature branches.
-- Pull Requests for code integration.
-- Descriptive Git commits.
-- Automated and manual testing.
-- Technical documentation.
+Actual test execution results are documented in the [Test Report](docs/test_report.md).
 
-### Development Roadmap
+## 9. Software Development Process
 
-| Issue | Feature | Status |
-|---|---|---|
-| #1 | Webcam Capture | Completed |
-| #2 | Hand Landmark Detection | Completed |
-| #3 | Finger Counting | Completed |
-| #4 | Gesture Recognition | Completed |
-| #5 | Visual Feedback and Actions | In Progress |
-| #6 | Final Testing and Documentation | Planned |
+HandTrack was developed using a lightweight, structured software development lifecycle.
 
-Each feature is tested and documented before integration into the main branch.
+### Planning
 
-## 9. Documentation
+The functional requirements and acceptance criteria were defined before implementation.
+
+### Task Management
+
+GitHub Issues and a Kanban board were used to plan and track development tasks.
+
+### Version Control
+
+Each feature was implemented on a dedicated Git branch.
+
+Git commits describe the changes introduced during development.
+
+### Code Integration
+
+Pull Requests were used to review and integrate feature branches into the main branch.
+
+### Verification
+
+Automated tests and manual checks were performed throughout development.
+
+### Documentation
+
+Requirements, architecture decisions, test results, and installation instructions were documented progressively.
+
+### Development Milestones
+
+| Issue | Delivered Feature |
+|---|---|
+| #1 | Webcam capture |
+| #2 | Hand landmark detection |
+| #3 | Finger counting |
+| #4 | Gesture recognition |
+| #5 | Visual feedback and actions |
+| #6 | Final validation, documentation and release |
+
+## 10. Documentation
 
 Additional project documentation:
 
@@ -337,37 +457,40 @@ Additional project documentation:
 - [Software Architecture](docs/architecture.md)
 - [Test Report](docs/test_report.md)
 - [Model Documentation](models/README.md)
+- [Changelog](CHANGELOG.md)
 
-## 10. Known Limitations
+## 11. Known Limitations
 
 - Only one hand is processed at a time.
-- Recognition accuracy depends on lighting conditions.
-- Finger occlusions may cause classification errors.
-- Strong hand rotations can affect geometric calculations.
+- Detection accuracy depends on lighting and camera quality.
+- Strong rotations and occlusions can cause errors.
+- Finger counting uses 2D geometric heuristics.
 - Gesture recognition depends on finger-state accuracy.
 - Temporal stabilization introduces a short delay.
 - Visual actions do not control external applications.
-- The action counter is not persistent between sessions.
+- The action counter resets when the application restarts.
 
-## 11. Future Improvements
+## 12. Future Improvements
 
-Potential extensions include:
+Potential future developments include:
 
 - Multi-hand tracking.
-- Additional predefined gestures.
-- Gesture-based presentation controls.
-- Gesture-controlled system volume.
-- Improved recognition using 3D landmarks.
-- Frame rate and performance monitoring.
-- A graphical application interface.
+- Additional gesture classes.
+- Gesture-controlled presentation slides.
+- Gesture-based system volume control.
+- Recognition using 3D hand landmark geometry.
+- Performance monitoring and FPS measurement.
+- More robust gesture classification using machine learning.
+- A dedicated graphical user interface.
 
-## 12. References
+## 13. References
 
 - [MediaPipe Hand Landmarker](https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker)
 - [OpenCV Documentation](https://docs.opencv.org/)
 - [Python Documentation](https://docs.python.org/3/)
 - [pytest Documentation](https://docs.pytest.org/)
+- [GitHub Actions Documentation](https://docs.github.com/en/actions)
 
 ---
 
-**HandTrack — A Computer Vision Project Built with Python.**
+**HandTrack — Real-Time Computer Vision and Gesture-Based Interaction with Python.**

@@ -132,3 +132,38 @@ are implemented in separate modules.
 This separation improves maintainability and
 allows independent automated testing.
 
+
+## Final Architecture — Version 1.0
+
+HandTrack follows a modular processing pipeline:
+
+1. OpenCV captures webcam frames.
+2. MediaPipe detects the 21 hand landmarks.
+3. The finger counter determines individual finger states.
+4. The gesture detector classifies predefined gestures.
+5. A temporal stabilizer confirms consistent predictions.
+6. The action controller generates interactive visual feedback.
+7. OpenCV renders the annotated video.
+
+## Separation of Responsibilities
+
+- main.py: application orchestration and webcam lifecycle
+- hand_tracker.py: landmark detection and visualization
+- finger_counter.py: geometric finger analysis
+- gesture_detector.py: classification and stabilization
+- gesture_actions.py: interactive feedback and event counting
+
+## Technical Limitations
+
+- Only one hand is analyzed at a time.
+- Finger counting uses 2D geometric heuristics.
+- Strong hand rotation and occlusion can affect accuracy.
+- Visual feedback depends on the reliability of gesture recognition.
+- The action counter exists only during the current session.
+
+## Privacy
+
+HandTrack processes webcam frames locally.
+The application does not automatically upload
+or store captured video.
+
